@@ -2,14 +2,15 @@ module.exports = {
   promise: async (context) => {
     return {
       status: 200,
-      body: "hi from promiseland"
+      body: `hi from promiseland. ${context.remainingTime()}ms remaining`
     };
   },
-  no_promise: (context, callback) => {
-    callback(200, "hi");
+  no_promise: (context) => {
+    context.callback(200, "hi");
   },
+  retpromise: (context) => new Promise((a) => a({status: 200, body: "retpromise"})),
   throwerp: async (context) => {throw "foo";},
-  thrower:  (context, callback) => {throw "foo";},
-  invalid: () => {},
-  invalid2: (a,b,c) => {} // do we care about this case?
+  reject: (context) => new Promise((_,r) => r("BOO")),
+  thrower: (context) => {throw "foo";},
+  timeout: () => {}  
 };
