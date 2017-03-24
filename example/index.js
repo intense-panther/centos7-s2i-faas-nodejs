@@ -1,16 +1,20 @@
 module.exports = {
-  promise: async (context) => {
+  promise: async (event, context) => {
     return {
-      status: 200,
-      body: `hi from promiseland. ${context.remainingTime()}ms remaining`
+      event: event,
+      msg: "hi from promiseland",
+      remainingTime: context.remainingTime()
     };
   },
-  no_promise: (context) => {
-    context.callback(200, "hi");
+  no_promise: (event, context) => {
+    return {
+      event: event,
+      msg: "hi from no_promise"
+    };
   },
-  retpromise: (context) => new Promise((a) => a({status: 200, body: "retpromise"})),
-  throwerp: async (context) => {throw "foo";},
-  reject: (context) => new Promise((_,r) => r("BOO")),
-  thrower: (context) => {throw "foo";},
+  retpromise: (event, context) => new Promise((a) => a(event)),
+  throwerp: async (ev, context) => {throw "foo";},
+  reject: (ev, context) => new Promise((_,r) => r("BOO")),
+  thrower: (ev, context) => {throw "foo";},
   timeout: () => {}  
 };
